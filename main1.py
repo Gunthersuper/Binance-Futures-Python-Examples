@@ -153,22 +153,7 @@ def open_order(symbol, side):
             )
 
 
-# Amount of your current positions
-def check_positions():
-    try:
-        resp = client.get_position_risk()
-        positions = 0
-        for elem in resp:
-            if float(elem['positionAmt']) != 0:
-                positions += 1
-        return positions
-    except ClientError as error:
-        print(
-            "Found error. status: {}, error code: {}, error message: {}".format(
-                error.status_code, error.error_code, error.error_message
-            )
-        )
-
+# Your current positions (returns the symbols list):
 def get_pos():
     try:
         resp = client.get_position_risk()
@@ -210,26 +195,6 @@ def close_open_orders(symbol):
             )
         )
 
-
-def check_last_order_pnl():
-    try:
-        response = client.get_income_history(recvWindow=6000)
-        pnl = []
-        time = 0
-        inc = ''
-        for elem in response:
-            if elem['incomeType'] == 'REALIZED_PNL':
-                pnl.append(elem)
-        for elem in pnl:
-            if float(elem['time']) > time:
-                inc = float(elem['income'])
-        return inc
-    except ClientError as error:
-        print(
-            "Found error. status: {}, error code: {}, error message: {}".format(
-                error.status_code, error.error_code, error.error_message
-            )
-        )
 
 # Strategy. Can use any other:
 def str_signal(symbol):
